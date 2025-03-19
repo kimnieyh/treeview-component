@@ -1,0 +1,34 @@
+.treeview {
+  list-style: none;
+  padding-left: 0;
+}
+
+.tree-node {
+  padding: 5px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.treeview > .tree-node.expanded > ul {
+  display: block;
+}
+
+.tree-node > ul {
+  display: none;
+}
+
+.tree-node.expanded > ul {
+  display: block;
+}
+
+.tree-node:hover {
+  background-color: #f1f1f1;
+}
+
+.toggle-icon, .leaf-icon {
+  margin-right: 5px;
+}
+
+.expanded > .toggle-icon {
+  transform: rotate(90deg);
+}
