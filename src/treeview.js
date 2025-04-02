@@ -6,7 +6,7 @@ class VirtualTreeView {
     this.openNodes = new Set();
     this.flatList = this.flatten(data);
     this.visibleCount = Math.ceil(container.clientHeight / itemHeight);
-
+    this.selectedNodeId = null;
     this.init();
   }
 
@@ -34,6 +34,17 @@ class VirtualTreeView {
     this.flatList = this.flatten(this.data);
     this.render();
   }
+  selectNode(id) {
+    if (this.selectedNodeId === id) return;
+
+    const prev = this.container.querySelector('.selected');
+    if (prev) prev.classList.remove('selected');
+
+    this.selectedNodeId = id;
+
+    const next = this.container.querySelector(`[data-id="${id}"]`);
+    if (next) next.classList.add('selected');
+  }
 
   render() {
     const scrollTop = this.container.scrollTop;
@@ -56,6 +67,16 @@ class VirtualTreeView {
         ${item.children ? `<span class="toggle">${this.openNodes.has(item.id) ? '▼' : '▶'}</span>` : '•'}
         <span>${item.text}</span>
       `;
+      div.dataset.id = item.id;
+
+      div.addEventListener('click', () => {
+        this.selectNode(item.id);
+      });
+
+      if (item.id === this.selectedNodeId) {
+        div.classList.add('selected');
+      }
+      
       if (item.children) {
         div.querySelector('.toggle').addEventListener('click', (e) => {
           e.stopPropagation();

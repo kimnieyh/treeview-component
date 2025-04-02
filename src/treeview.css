@@ -9,15 +9,15 @@
   transition: background-color 0.2s ease;
 }
 
-.treeview > .tree-node.expanded > ul {
+.treeview>.tree-node.expanded>ul {
   display: block;
 }
 
-.tree-node > ul {
+.tree-node>ul {
   display: none;
 }
 
-.tree-node.expanded > ul {
+.tree-node.expanded>ul {
   display: block;
 }
 
@@ -25,15 +25,20 @@
   background-color: #f1f1f1;
 }
 
-.toggle-icon, .leaf-icon {
+.toggle-icon,
+.leaf-icon {
   margin-right: 5px;
 }
 
-.expanded > .toggle-icon {
+.expanded>.toggle-icon {
   transform: rotate(90deg);
 }
 
 #treeview {
   height: 400px;
   overflow-y: auto;
+}
+
+.selected {
+  font-weight: bold;
 }
