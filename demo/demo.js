@@ -22,7 +22,7 @@ const data = [
     ]
   }
 ];
-  
+
 
 function generateTree(depth = 3, breadth = 10, prefix = 'node') {
   let idCounter = 1;
@@ -47,8 +47,22 @@ function generateTree(depth = 3, breadth = 10, prefix = 'node') {
 }
 
 const bigData = generateTree(4, 10); // depth 4, each node has 10 children
-  document.addEventListener('DOMContentLoaded', () => {
-    const treeContainer = document.getElementById('treeview');
-    new VirtualTreeView(treeContainer, bigData);
+document.addEventListener('DOMContentLoaded', () => {
+  const treeContainer = document.getElementById('treeview');
+  const selectedUsersTable = document.getElementById('selected-users');
+
+  new VirtualTreeView(treeContainer, data, 24, {
+    onSelect: (node) => {
+      if (!node) return;
+
+      selectedUsersTable.innerHTML = `
+        <tr>
+          <td>👤</td>
+          <td>${node.text} (${node.id})</td>
+          <td>—</td>
+          <td><button class="btn btn-sm btn-danger">삭제</button></td>
+        </tr>
+      `;
+    }
   });
-  
+});

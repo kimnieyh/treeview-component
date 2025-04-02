@@ -1,5 +1,5 @@
 class VirtualTreeView {
-  constructor(container, data, itemHeight = 24) {
+  constructor(container, data, itemHeight = 24, options={}) {
     this.container = container;
     this.data = data;
     this.itemHeight = itemHeight;
@@ -7,6 +7,7 @@ class VirtualTreeView {
     this.flatList = this.flatten(data);
     this.visibleCount = Math.ceil(container.clientHeight / itemHeight);
     this.selectedNodeId = null;
+    this.onSelect = options.onSelect || null;
     this.init();
   }
 
@@ -34,6 +35,18 @@ class VirtualTreeView {
     this.flatList = this.flatten(this.data);
     this.render();
   }
+
+  findNodeById(id, nodes = this.data) {
+    for (const node of nodes) {
+      if (node.id === id) return node;
+      if (node.children) {
+        const found = this.findNodeById(id, node.children);
+        if (found) return found;
+      }
+    }
+    return null;
+  }
+
   selectNode(id) {
     if (this.selectedNodeId === id) return;
 
@@ -44,6 +57,10 @@ class VirtualTreeView {
 
     const next = this.container.querySelector(`[data-id="${id}"]`);
     if (next) next.classList.add('selected');
+    if (typeof this.onSelect === 'function') {
+      const selectedNode = this.findNodeById(this.selectedNodeId);
+      this.onSelect(selectedNode);
+    }
   }
 
   render() {
@@ -76,7 +93,7 @@ class VirtualTreeView {
       if (item.id === this.selectedNodeId) {
         div.classList.add('selected');
       }
-      
+
       if (item.children) {
         div.querySelector('.toggle').addEventListener('click', (e) => {
           e.stopPropagation();
