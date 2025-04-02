@@ -167,6 +167,14 @@ function generateTree(depth = 3, breadth = 10, prefix = 'node') {
   return [createNode(0)];
 }
 
+function filterUserTable(keyword) {
+  const rows = document.querySelectorAll('#selected-users tr');
+  rows.forEach(row => {
+    const text = row.innerText.toLowerCase();
+    row.style.display = text.includes(keyword.toLowerCase()) ? '' : 'none';
+  });
+}
+
 const bigData = generateTree(4, 10); // depth 4, each node has 10 children
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -174,6 +182,11 @@ document.addEventListener('DOMContentLoaded', () => {
   const tbody = document.getElementById('selected-users');
   const checkAll = document.getElementById('check-all');
   const deleteBtn = document.querySelector('.btn-danger');
+  const searchInput = document.getElementById('user-search');
+  
+  searchInput.addEventListener('input', () => {
+    filterUserTable(searchInput.value);
+  });
 
   // 전체 체크
   checkAll.addEventListener('change', () => {
@@ -210,8 +223,8 @@ document.addEventListener('DOMContentLoaded', () => {
         });
         tbody.appendChild(row);
       });
-       //체크박스 초기화
-       checkAll.checked = false;
+      //체크박스 초기화
+      checkAll.checked = false;
     }
   });
 });
