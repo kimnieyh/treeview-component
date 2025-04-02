@@ -171,24 +171,47 @@ const bigData = generateTree(4, 10); // depth 4, each node has 10 children
 
 document.addEventListener('DOMContentLoaded', () => {
   const treeContainer = document.getElementById('treeview');
+  const tbody = document.getElementById('selected-users');
+  const checkAll = document.getElementById('check-all');
+  const deleteBtn = document.querySelector('.btn-danger');
+
+  // 전체 체크
+  checkAll.addEventListener('change', () => {
+    const checkboxes = tbody.querySelectorAll('input[type="checkbox"]');
+    checkboxes.forEach(cb => cb.checked = checkAll.checked);
+  });
+
+  // 삭제 버튼
+  deleteBtn.addEventListener('click', () => {
+    const checked = tbody.querySelectorAll('input[type="checkbox"]:checked');
+    checked.forEach(cb => cb.closest('tr')?.remove());
+  });
+
 
   new VirtualTreeView(treeContainer, data, 24, {
     onSelect: (node, leafNodes) => {
       if (!node || !leafNodes) return;
-      
+
       const tbody = document.getElementById('selected-users');
       tbody.innerHTML = '';
 
       leafNodes.forEach(emp => {
         const row = document.createElement('tr');
         row.innerHTML = `
-          <td>👤</td>
+          <td><input class="form-check-input" type="checkbox" value="${emp.id}" id="flexCheckDefault"></td>
           <td>${emp.label} (${emp.id})</td>
+          <td>${emp.data.dept}</td>
           <td>—</td>
-          <td><button class="btn btn-sm btn-danger">삭제</button></td>
+          <td><button class="btn btn-sm btn-danger btn-delete">삭제</button></td>
         `;
+        // 개별 삭제 버튼 이벤트
+        row.querySelector('.btn-delete').addEventListener('click', () => {
+          row.remove();
+        });
         tbody.appendChild(row);
       });
+       //체크박스 초기화
+       checkAll.checked = false;
     }
   });
 });

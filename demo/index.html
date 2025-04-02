@@ -16,25 +16,16 @@
         <div id="treeview"></div>
       </div>
       <div class="col">
-        <h5>사용자목록</h5>
+        <div class="row">
+          <div class="col"><h5>선택된 사용자</h5></div>
+          <div class="col text-end"><button type="button" class="btn btn-danger">체크된 사용자 삭제</button></div>
+        </div>        
         <table class="table">
           <thead>
             <tr>
-              <th></th>
-              <th>ID</th>
-              <th>이름</th>
-              <th>직책</th>
-            </tr>
-          </thead>
-        </table>
-      </div>
-      <div class="col">
-        <h5>선택된 사용자</h5>
-        <table class="table">
-          <thead>
-            <tr>
-              <th></th>
+              <th><input class="form-check-input" type="checkbox" id="check-all"></th>
               <th>이름(ID)</th>
+              <th>부서</th>
               <th>기간</th>
               <th>액션</th>
             </tr>
