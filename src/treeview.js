@@ -36,6 +36,21 @@ class VirtualTreeView {
     this.render();
   }
 
+  findLeafNodes(node) {
+    const result = [];
+  
+    function traverse(n) {
+      if (!n.children || n.children.length === 0) {
+        result.push(n);
+      } else {
+        n.children.forEach(traverse);
+      }
+    }
+  
+    traverse(node);
+    return result;
+  }
+
   findNodeById(id, nodes = this.data) {
     for (const node of nodes) {
       if (node.id === id) return node;
@@ -45,6 +60,21 @@ class VirtualTreeView {
       }
     }
     return null;
+  }
+  
+  findLeafNodes(node) {
+    const result = [];
+  
+    function traverse(n) {
+      if (!n.children || n.children.length === 0) {
+        result.push(n);
+      } else {
+        n.children.forEach(traverse);
+      }
+    }
+  
+    traverse(node);
+    return result;
   }
 
   selectNode(id) {
@@ -59,7 +89,8 @@ class VirtualTreeView {
     if (next) next.classList.add('selected');
     if (typeof this.onSelect === 'function') {
       const selectedNode = this.findNodeById(this.selectedNodeId);
-      this.onSelect(selectedNode);
+      const leaves = this.findLeafNodes(selectedNode);
+      this.onSelect(selectedNode, leaves); 
     }
   }
 
@@ -82,7 +113,7 @@ class VirtualTreeView {
       div.style.cursor = 'pointer';
       div.innerHTML = `
         ${item.children ? `<span class="toggle">${this.openNodes.has(item.id) ? '▼' : '▶'}</span>` : '•'}
-        <span>${item.text}</span>
+        <span>${item.label}</span>
       `;
       div.dataset.id = item.id;
 
