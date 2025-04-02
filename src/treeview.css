@@ -32,3 +32,8 @@
 .expanded > .toggle-icon {
   transform: rotate(90deg);
 }
+
+#treeview {
+  height: 400px;
+  overflow-y: auto;
+}
